@@ -1,0 +1,464 @@
+
+# Creating the Database and Using It
+
+CREATE DATABASE StudentRecords;
+USE StudentRecords;
+
+
+# Creating the Students Table
+
+CREATE TABLE Students (
+    StudentID INT AUTO_INCREMENT PRIMARY KEY,
+    FirstName VARCHAR(50) NOT NULL,
+    LastName VARCHAR(50) NOT NULL,
+    DateOfBirth DATE NOT NULL,
+    Address VARCHAR(100),
+    PhoneNumber VARCHAR(15),
+    Email VARCHAR(50)
+);
+
+
+# Creating the Departments Table
+
+CREATE TABLE Departments (
+    DepartmentID INT AUTO_INCREMENT PRIMARY KEY,
+    DepartmentName VARCHAR(50) NOT NULL,
+    HeadOfDepartment VARCHAR(50)
+);
+
+
+# Creating the StudentPerformance Table
+
+CREATE TABLE StudentPerformance (
+    PerformanceID INT AUTO_INCREMENT PRIMARY KEY,
+    StudentID INT,
+    DepartmentID INT,
+    Semester INT,
+    GPA DECIMAL(3, 2),
+    FOREIGN KEY (StudentID) REFERENCES Students(StudentID),
+    FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID)
+);
+
+
+
+# Creating the StudentAttendance Table
+
+CREATE TABLE StudentAttendance (
+    AttendanceID INT IDENTITY PRIMARY KEY,
+    StudentID INT,
+    DepartmentID INT,
+    Date DATE,
+    Status VARCHAR(7) CHECK (Status IN ('Present', 'Absent')),
+    FOREIGN KEY (StudentID) REFERENCES Students(StudentID),
+    FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID)
+);
+
+
+
+# Creating the Courses Table
+
+CREATE TABLE Courses (
+    CourseID INT AUTO_INCREMENT PRIMARY KEY,
+    CourseName VARCHAR(100) NOT NULL,
+    DepartmentID INT,
+    Credits INT,
+    FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID)
+);
+
+
+
+# Creating the Enrollments Table
+
+CREATE TABLE Enrollments (
+    EnrollmentID INT AUTO_INCREMENT PRIMARY KEY,
+    StudentID INT,
+    CourseID INT,
+    EnrollmentDate DATE,
+    FOREIGN KEY (StudentID) REFERENCES Students(StudentID),
+    FOREIGN KEY (CourseID) REFERENCES Courses(CourseID)
+);
+
+
+
+# Creating the Instructors Table
+
+CREATE TABLE Instructors (
+    InstructorID INT AUTO_INCREMENT PRIMARY KEY,
+    FirstName VARCHAR(50) NOT NULL,
+    LastName VARCHAR(50) NOT NULL,
+    DepartmentID INT,
+    Email VARCHAR(50),
+    FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID)
+);
+
+
+
+# Inserting Students data
+
+INSERT INTO Students (FirstName, LastName, DateOfBirth, Address, PhoneNumber, Email)
+VALUES
+('John', 'Doe', '2000-01-15', '123 Maple St', '555-1234', 'john.doe@example.com'),
+('Jane', 'Smith', '1999-05-23', '456 Oak St', '555-5678', 'jane.smith@example.com'),
+('Emily', 'Johnson', '2001-02-10', '789 Pine St', '555-7890', 'emily.johnson@example.com'),
+('Michael', 'Williams', '1998-12-05', '101 Cedar St', '555-3456', 'michael.williams@example.com'),
+('Sarah', 'Brown', '2000-07-19', '202 Birch St', '555-6543', 'sarah.brown@example.com'),
+('David', 'Jones', '2002-03-25', '303 Spruce St', '555-9876', 'david.jones@example.com'),
+('Laura', 'Garcia', '1999-11-30', '404 Elm St', '555-4321', 'laura.garcia@example.com'),
+('James', 'Martinez', '2001-08-22', '505 Aspen St', '555-8765', 'james.martinez@example.com'),
+('Anna', 'Lopez', '2000-04-12', '606 Willow St', '555-2345', 'anna.lopez@example.com'),
+('Robert', 'Gonzalez', '1998-06-14', '707 Chestnut St', '555-3456', 'robert.gonzalez@example.com'),
+('Jessica', 'Wilson', '1999-01-27', '808 Redwood St', '555-5678', 'jessica.wilson@example.com'),
+('Daniel', 'Anderson', '2000-10-18', '909 Magnolia St', '555-6789', 'daniel.anderson@example.com'),
+('Mary', 'Thomas', '2001-09-09', '1010 Walnut St', '555-7890', 'mary.thomas@example.com'),
+('Paul', 'Taylor', '2002-05-05', '1111 Cypress St', '555-8901', 'paul.taylor@example.com'),
+('Sophia', 'Moore', '1999-07-15', '1212 Fir St', '555-9012', 'sophia.moore@example.com'),
+('Andrew', 'Jackson', '2000-11-21', '1313 Hemlock St', '555-0123', 'andrew.jackson@example.com'),
+('Olivia', 'White', '2001-06-06', '1414 Cedar St', '555-1234', 'olivia.white@example.com'),
+('Joshua', 'Harris', '1998-09-30', '1515 Maple St', '555-2345', 'joshua.harris@example.com'),
+('Megan', 'Clark', '1999-03-15', '1616 Oak St', '555-3456', 'megan.clark@example.com'),
+('Matthew', 'Lewis', '2000-01-25', '1717 Pine St', '555-4567', 'matthew.lewis@example.com'),
+('Chloe', 'Robinson', '2002-04-10', '1818 Spruce St', '555-5678', 'chloe.robinson@example.com'),
+('Christopher', 'Walker', '1999-12-02', '1919 Birch St', '555-6789', 'christopher.walker@example.com'),
+('Ava', 'Perez', '2001-07-25', '2020 Elm St', '555-7890', 'ava.perez@example.com'),
+('Ethan', 'Hall', '2000-02-14', '2121 Aspen St', '555-8901', 'ethan.hall@example.com'),
+('Isabella', 'Young', '1998-05-11', '2222 Willow St', '555-9012', 'isabella.young@example.com'),
+('Alexander', 'Allen', '2000-08-03', '2323 Chestnut St', '555-0123', 'alexander.allen@example.com'),
+('Grace', 'King', '2001-11-11', '2424 Redwood St', '555-1234', 'grace.king@example.com'),
+('Liam', 'Scott', '1999-04-17', '2525 Magnolia St', '555-2345', 'liam.scott@example.com'),
+('Amelia', 'Green', '2000-09-08', '2626 Walnut St', '555-3456', 'amelia.green@example.com'),
+('Mason', 'Baker', '2002-01-01', '2727 Cypress St', '555-4567', 'mason.baker@example.com');
+
+
+# Selecting students table
+
+SELECT * FROM Students;
+
+
+
+
+# Inserting Departments table
+
+INSERT INTO Departments (DepartmentName, HeadOfDepartment)
+VALUES
+('Computer Science', 'Dr. Alan Turing'),
+('Mathematics', 'Dr. Ada Lovelace'),
+('Physics', 'Dr. Richard Feynman'),
+('Chemistry', 'Dr. Marie Curie'),
+('Biology', 'Dr. Charles Darwin'),
+('English Literature', 'Dr. Jane Austen'),
+('History', 'Dr. Herodotus'),
+('Political Science', 'Dr. Niccolò Machiavelli'),
+('Philosophy', 'Dr. Socrates'),
+('Economics', 'Dr. John Maynard Keynes'),
+('Psychology', 'Dr. Sigmund Freud'),
+('Sociology', 'Dr. Max Weber'),
+('Anthropology', 'Dr. Margaret Mead'),
+('Geography', 'Dr. Carl Ritter'),
+('Art History', 'Dr. Giorgio Vasari'),
+('Linguistics', 'Dr. Noam Chomsky'),
+('Education', 'Dr. John Dewey'),
+('Law', 'Dr. Ruth Bader Ginsburg'),
+('Engineering', 'Dr. Nikola Tesla'),
+('Medicine', 'Dr. Hippocrates'),
+('Nursing', 'Dr. Florence Nightingale'),
+('Public Health', 'Dr. Jonas Salk'),
+('Environmental Science', 'Dr. Rachel Carson'),
+('Statistics', 'Dr. Ronald Fisher'),
+('Music', 'Dr. Ludwig van Beethoven'),
+('Theater', 'Dr. William Shakespeare'),
+('Architecture', 'Dr. Frank Lloyd Wright'),
+('Business Administration', 'Dr. Peter Drucker'),
+('Marketing', 'Dr. Philip Kotler'),
+('Finance', 'Dr. Eugene Fama'),
+('Accounting', 'Dr. Luca Pacioli');
+
+# Selecting Departments table
+
+SELECT * FROM Departments;
+
+
+# Inserting StudentPerformance  table
+
+INSERT INTO StudentPerformance (StudentID, DepartmentID, Semester, GPA)
+VALUES
+(1, 1, 1, 3.5),
+(2, 2, 1, 3.8),
+(3, 1, 1, 3.6),
+(4, 3, 1, 3.7),
+(5, 2, 1, 3.9),
+(6, 4, 1, 3.2),
+(7, 1, 1, 3.4),
+(8, 5, 1, 3.3),
+(9, 3, 1, 3.5),
+(10, 4, 1, 3.8),
+(1, 2, 2, 3.7),
+(2, 3, 2, 3.9),
+(3, 4, 2, 3.4),
+(4, 5, 2, 3.6),
+(5, 1, 2, 3.8),
+(6, 2, 2, 3.2),
+(7, 3, 2, 3.5),
+(8, 4, 2, 3.3),
+(9, 5, 2, 3.7),
+(10, 1, 2, 3.9),
+(1, 3, 3, 3.6),
+(2, 4, 3, 3.8),
+(3, 5, 3, 3.7),
+(4, 1, 3, 3.4),
+(5, 3, 3, 3.2),
+(6, 5, 3, 3.9),
+(7, 2, 3, 3.5),
+(8, 3, 3, 3.6),
+(9, 1, 3, 3.8),
+(10, 2, 3, 3.7);
+
+
+
+# Selecting StudentPerformance table
+
+SELECT * FROM StudentPerformance;
+
+
+# Inserting StudentAttendence table
+
+INSERT INTO StudentAttendance (StudentID, DepartmentID, Date, Status)
+VALUES
+(1, 1, '2023-06-14', 'Present'),
+(2, 2, '2023-06-14', 'Absent'),
+(3, 1, '2023-06-14', 'Present'),
+(4, 3, '2023-06-14', 'Present'),
+(5, 2, '2023-06-14', 'Absent'),
+(6, 4, '2023-06-14', 'Present'),
+(7, 1, '2023-06-14', 'Present'),
+(8, 5, '2023-06-14', 'Absent'),
+(9, 3, '2023-06-14', 'Present'),
+(10, 4, '2023-06-14', 'Present'),
+(1, 2, '2023-06-15', 'Present'),
+(2, 3, '2023-06-15', 'Absent'),
+(3, 4, '2023-06-15', 'Present'),
+(4, 5, '2023-06-15', 'Present'),
+(5, 1, '2023-06-15', 'Absent'),
+(6, 2, '2023-06-15', 'Present'),
+(7, 3, '2023-06-15', 'Present'),
+(8, 4, '2023-06-15', 'Absent'),
+(9, 5, '2023-06-15', 'Present'),
+(10, 1, '2023-06-15', 'Present'),
+(1, 3, '2023-06-16', 'Present'),
+(2, 4, '2023-06-16', 'Absent'),
+(3, 5, '2023-06-16', 'Present'),
+(4, 1, '2023-06-16', 'Present'),
+(5, 3, '2023-06-16', 'Absent'),
+(6, 5, '2023-06-16', 'Present'),
+(7, 2, '2023-06-16', 'Present'),
+(8, 3, '2023-06-16', 'Absent'),
+(9, 1, '2023-06-16', 'Present'),
+(10, 2, '2023-06-16', 'Present');
+
+#Selecting StudentAttendence
+
+SELECT * FROM StudentAttendence;
+
+
+# Inserting Courses table
+
+INSERT INTO Courses (CourseName, DepartmentID, Credits)
+VALUES
+('Introduction to Computer Science', 1, 3),
+('Calculus I', 2, 4),
+('Physics for Engineers', 3, 4),
+('Organic Chemistry', 4, 3),
+('Introduction to Statistics', 5, 3),
+('Data Structures and Algorithms', 1, 4),
+('Linear Algebra', 2, 3),
+('Introduction to Electromagnetism', 3, 4),
+('Inorganic Chemistry', 4, 3),
+('Cell Biology', 5, 3),
+('Software Engineering', 1, 4),
+('Multivariable Calculus', 2, 4),
+('Modern Physics', 3, 3),
+('Analytical Chemistry', 4, 4),
+('Genetics', 5, 3),
+('Database Systems', 1, 3),
+('Discrete Mathematics', 2, 3),
+('Thermodynamics', 3, 4),
+('Physical Chemistry', 4, 4),
+('Microbiology', 5, 3),
+('Operating Systems', 1, 4),
+('Differential Equations', 2, 3),
+('Quantum Mechanics', 3, 4),
+('Biochemistry', 4, 3),
+('Ecology', 5, 3),
+('Computer Networks', 1, 4),
+('Number Theory', 2, 3),
+('Astrophysics', 3, 4),
+('Polymer Chemistry', 4, 3),
+('Immunology', 5, 3);
+
+# Selecting Courses table
+
+SELECT * FROM Courses;
+
+
+#  Enrollments Table
+
+INSERT INTO Enrollments (StudentID, CourseID, EnrollmentDate)
+VALUES
+(1, 1, '2023-09-01'),
+(2, 2, '2023-09-01'),
+(3, 3, '2023-09-02'),
+(4, 4, '2023-09-02'),
+(5, 5, '2023-09-03'),
+(6, 6, '2023-09-03'),
+(7, 7, '2023-09-04'),
+(8, 8, '2023-09-04'),
+(9, 9, '2023-09-05'),
+(10, 10, '2023-09-05'),
+(1, 11, '2023-09-06'),
+(2, 12, '2023-09-06'),
+(3, 13, '2023-09-07'),
+(4, 14, '2023-09-07'),
+(5, 15, '2023-09-08'),
+(6, 16, '2023-09-08'),
+(7, 17, '2023-09-09'),
+(8, 18, '2023-09-09'),
+(9, 19, '2023-09-10'),
+(10, 20, '2023-09-10'),
+(1, 21, '2023-09-11'),
+(2, 22, '2023-09-11'),
+(3, 23, '2023-09-12'),
+(4, 24, '2023-09-12'),
+(5, 25, '2023-09-13'),
+(6, 26, '2023-09-13'),
+(7, 27, '2023-09-14'),
+(8, 28, '2023-09-14'),
+(9, 29, '2023-09-15'),
+(10, 30, '2023-09-15');
+
+# Selecting Enrollments table
+
+SELECT * FROM Enrollments;
+
+
+# Inserting Instructors table
+
+INSERT INTO Instructors (FirstName, LastName, DepartmentID, Email)
+VALUES
+('Grace', 'Hopper', 1, 'grace.hopper@example.com'),
+('Isaac', 'Newton', 2, 'isaac.newton@example.com'),
+('Marie', 'Curie', 3, 'marie.curie@example.com'),
+('Albert', 'Einstein', 4, 'albert.einstein@example.com'),
+('Ada', 'Lovelace', 1, 'ada.lovelace@example.com'),
+('Galileo', 'Galilei', 2, 'galileo.galilei@example.com'),
+('Nikola', 'Tesla', 3, 'nikola.tesla@example.com'),
+('Rosalind', 'Franklin', 4, 'rosalind.franklin@example.com'),
+('Alan', 'Turing', 1, 'alan.turing@example.com'),
+('Stephen', 'Hawking', 2, 'stephen.hawking@example.com'),
+('Katherine', 'Johnson', 3, 'katherine.johnson@example.com'),
+('Linus', 'Pauling', 4, 'linus.pauling@example.com'),
+('Margaret', 'Hamilton', 1, 'margaret.hamilton@example.com'),
+('Richard', 'Feynman', 2, 'richard.feynman@example.com'),
+('Barbara', 'McClintock', 3, 'barbara.mcclintock@example.com'),
+('Charles', 'Babbage', 4, 'charles.babbage@example.com'),
+('Sally', 'Ride', 1, 'sally.ride@example.com'),
+('John', 'von Neumann', 2, 'john.von.neumann@example.com'),
+('Emmy', 'Noether', 3, 'emmy.noether@example.com'),
+('Michael', 'Faraday', 4, 'michael.faraday@example.com'),
+('Ada', 'Yonath', 1, 'ada.yonath@example.com'),
+('Max', 'Planck', 2, 'max.planck@example.com'),
+('Claude', 'Shannon', 3, 'claude.shannon@example.com'),
+('Erwin', 'Schrodinger', 4, 'erwin.schrodinger@example.com'),
+('Dorothy', 'Hodgkin', 1, 'dorothy.hodgkin@example.com'),
+('Niels', 'Bohr', 2, 'niels.bohr@example.com'),
+('Gerty', 'Cori', 3, 'gerty.cori@example.com'),
+('Edwin', 'Hubble', 4, 'edwin.hubble@example.com'),
+('Rachel', 'Carson', 1, 'rachel.carson@example.com'),
+('George', 'Washington Carver', 2, 'george.carver@example.com');
+
+# Selecting Insrtuctors table
+
+SELECT * FROM Instructors;
+
+
+
+# Update Students table
+
+UPDATE Students
+SET Address = '789 Pine St', PhoneNumber = '555-9999'
+WHERE StudentID = 1;
+
+
+
+# Update Courses table
+
+UPDATE Courses
+SET Credits = 4
+WHERE CourseID = 1;
+
+
+# Retrieve student names in Computer Science department.
+
+SELECT s.FirstName, s.LastName, d.DepartmentName
+FROM Students s
+JOIN StudentPerformance sp ON s.StudentID = sp.StudentID
+JOIN Departments d ON sp.DepartmentID = d.DepartmentID
+WHERE d.DepartmentName = 'Computer Science';
+
+
+
+# Get student's performance details by StudentID=1.
+
+SELECT s.FirstName, s.LastName, sp.Semester, sp.GPA
+FROM Students s
+JOIN StudentPerformance sp ON s.StudentID = sp.StudentID
+WHERE s.StudentID = 1;
+
+
+
+# Retrieve student attendance on June 14, 2023.
+
+SELECT s.FirstName, s.LastName, sa.Date, sa.Status
+FROM Students s
+JOIN StudentAttendance sa ON s.StudentID = sa.StudentID
+WHERE sa.Date = '2023-06-14';
+
+
+
+#  Delete student record with StudentID=2 from Students.
+
+
+DELETE FROM Students
+WHERE StudentID = 2;
+
+
+# Get student names enrolled in Introduction to Computer Science.
+
+SELECT s.FirstName, s.LastName, c.CourseName
+FROM Students s
+JOIN Enrollments e ON s.StudentID = e.StudentID
+JOIN Courses c ON e.CourseID = c.CourseID
+WHERE c.CourseName = 'Introduction to Computer Science';
+
+
+
+# Retrieve instructor names, departments, and emails.
+
+SELECT i.FirstName, i.LastName, d.DepartmentName, i.Email
+FROM Instructors i
+JOIN Departments d ON i.DepartmentID = d.DepartmentID;
+
+
+
+# Get courses and enrollment dates for StudentID=1.
+
+SELECT s.FirstName, s.LastName, c.CourseName, e.EnrollmentDate
+FROM Students s
+JOIN Enrollments e ON s.StudentID = e.StudentID
+JOIN Courses c ON e.CourseID = c.CourseID
+WHERE s.StudentID = 1;
+
+
+
+# Delete enrollment record with EnrollmentID=1 from Enrollments
+
+DELETE FROM Enrollments
+WHERE EnrollmentID = 1;
